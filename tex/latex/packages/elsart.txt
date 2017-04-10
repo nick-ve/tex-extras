@@ -1,0 +1,40 @@
+% This file is part of the Elsevier LaTeX package.
+% ------------------------------------------------
+% Version: 4
+% Date:     12 May 1998
+
+Copyright (C) 1998 by Elsevier Science. All rights reserved.
+
+IMPORTANT NOTICE:
+
+You are not allowed to change this README file.
+
+This the Elsevier LaTeX package. You need standard LaTeX 2e
+(December 1995 or later) or LaTeX version 2.09 of 14 January 1992, 
+if you want to use it.  The documentation is in the file 
+instraut.dvi / instraut.ps / instraut.pdf. If you want
+to process the dvi file you need AMSFonts v2.1. 
+The booklet can also be obtained, free of charge,
+from the publisher. 
+
+You should have the following files:
+
+README          The file you are reading now.
+ 
+elsart.cls	The LaTeX2e class file
+
+elsart.sty      The main document style for LaTeX209. 
+                Copy this to the directory where all other .sty files are.
+
+elsart12.sty    The pointsize-related definitions for LaTeX209. 
+ 		Copy this to the directory where all other .sty files are.
+
+instraut.dvi    Booklet containing instructions on how to prepare a 
+                file suitable for processing by Elsevier.
+
+instraut.ps     PostScript version of the booklet
+
+instraut.pdf     PDF version of the booklet
+
+
+

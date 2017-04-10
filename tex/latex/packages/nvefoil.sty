@@ -1,0 +1,390 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                    
+% LaTeX style file to produce (color) transparencies for presentations.
+%                                                                    
+% The package can be invoked by one of the two following commands :  
+%
+%   1) Old LaTeX format
+%      \documentstyle[...,nvefoil]{article}
+%
+%   2) LaTeX2e format
+%      \documentclass[a4paper]{article}
+%      \usepackage{nvefoil}
+%
+% Available options :
+% -------------------
+% nocolor  : produces black and white transparencies instead of color
+% noams    : suppresses the (default) usage of the AMS math symbols
+% boldmath : produces all mathematical expressions in boldface
+% boldtext : uses a bold font version for the main transparency text
+% widetext : uses a slightly wider bold font for the main transparency text
+%
+%--- NvE 20-may-1999 UU-SAP Utrecht
+%--- Modified by NvE 27-jan-2000
+% Size and locations of body, header, footer etc... derived from
+% paperheight and paperwidth to support various paper sizes and
+% landscape format.     
+% Command \Tr modified such that auto-pagebreaks produce identical
+% format as pages started with \Tr or \Tran.
+% Additional package 'color.sty' invoked to have also standard LaTeX
+% color facilities (like page background color etc...) available.
+%--- Modified by NvE 15-feb-2000
+% Option 'boldmath' introduced.
+% Note that one can always toggle between various modes via the 
+% standard LaTeX commands \mathversion{bold} and \mathversion{normal}
+%--- Modified by NvE 21-mar-2000
+% Color of table of contents set to magenta for visibility with beamer.
+%--- Modified by NvE 04-feb-2001
+% New command \Contents implemented to enable user-selected text for
+% the Table of Contents header like e.g. \Contents{Overview}.
+%--- Modified by NvE 01-oct-2001
+% \footskip changed from 0.5\headsep to 0.45\headsep to allow
+% printing of complete footer text on A4 pages on HP printers. 
+%--- Modified by NvE 20-mar-2002
+% Page number separated by blanks from the "TrTitle" in the footer.
+% New commands \Trans, \Transsb, \Transcb, \Conts, \Contssb, and \Contscb
+% introduced to allow more flexible user defined color settings in view
+% of beamer presentations with a background page color.
+% The now obsolete commands \Tran and \Contents are still available
+% for backward compatibility.
+%--- Modified by NvE 22-mar-2002
+% New command \Scolorbox (shabox with colored inner field) introduced.
+%--- Modified by NvE 03-may-2002
+% New command \shacbox (standard shabox with colored inner field) introduced.
+% Also various styles for the table of contents and transparancy headers
+% introduced. 
+%--- Modified by NvE 23-may-2002
+% Savebox \Title for the \Trtitle command renamed to \Ftitle to allow
+% the new command \Title to be introduced to specify the title for
+% the title page.
+%--- Modified by NvE 23-feb-2003
+% Actual setting of boldmath and color selection performed in
+% nvecmd.sty so that nvecmd.sty can be used standalone to also produce
+% the various color facilities in combination with private color commands.
+%--- Modified by NvE 13-nov-2004
+% Computer Modern Sans Serif (cmss) set as default font for the whole
+% document via the \renewcommand{\familydefault}{cmss} statement.
+% Consequently the \sf command was removed from the \Tr command.
+% However, the \sf command is kept on the \Trtitle command because
+% of the \savebox environment.
+% Options 'boldtext' and 'widetext' introduced to allow the user to select
+% the 'bold extended' or 'semibold condensed' font version for the main text
+% on transparencies.
+% By default the 'normal' (i.e. not bold) font version is used.
+%--- Modified by NvE 19-dec-2007
+% Vertical space of 2mm introduced in \Transb and \Transcb headers
+% to cope with new version of \shabox in MikTex 2.6.
+%--- Modified by NvE 06-jan-2008
+% New commands \Shahbox and \Shcolorbox introduced to allow full width
+% headers with shadowbox even in case of twocolumn mode. 
+% This change was needed because of a newly introduced check on the
+% column width in the new version of \shabox of MikTex 2.6.
+% These new commands are used in \Transb and \Transcb.
+%--- Modified by NvE 16-jan-2013
+% Switched to use the package 'fancyhdr' instead of 'fancyheadings'.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\NeedsTeXFormat{LaTeX2e} 
+\ProvidesPackage{nvefoil}[2013/01/16 Transparancy facility version 2.1/6 NvE 16-jan-2013]
+
+% Set Computer Modern Sans Serif as default font
+\renewcommand{\familydefault}{cmss}
+
+\RequirePackage{ifthen}
+
+\newboolean{color}
+\setboolean{color}{true}
+
+\newboolean{wide}
+\setboolean{wide}{false}
+
+\newboolean{bold}
+\setboolean{bold}{false}
+
+\DeclareOption{nocolor}{\setboolean{color}{false}}
+
+\DeclareOption{widetext}{\setboolean{wide}{true}}
+
+\DeclareOption{boldtext}{\setboolean{bold}{true}}
+
+\DeclareOption{noams}{\PassOptionsToPackage{noams}{nvecmd}}
+
+\DeclareOption{boldmath}{\PassOptionsToPackage{boldmath}{nvecmd}}
+
+\ProcessOptions
+
+\ifthenelse{\boolean{color}}
+ {
+  \RequirePackage[color]{nvecmd}
+ }
+ {
+  \RequirePackage{nvecmd}
+ }
+
+\ifthenelse{\boolean{bold}}
+ {
+  \renewcommand{\seriesdefault}{sbc}
+ }
+
+\ifthenelse{\boolean{wide}}
+ {
+  \renewcommand{\seriesdefault}{bx}
+ }
+
+\RequirePackage{fancyhdr}
+\RequirePackage{epsfig}
+\RequirePackage{rotating}
+\RequirePackage{floatfig}
+\RequirePackage{wrapfig}
+\RequirePackage{shadow}
+ 
+% Define the title box for the footer title of each transparency
+% as specified by the \Trtitle command
+\newsavebox{\Ftitle}
+\savebox{\Ftitle}{\huge\null}
+ 
+% Define page layout parameters
+\voffset=-1in % Remove blank area such that sidemargin is counted from paper edge
+\hoffset=-1in % Remove blank area such that topmargin is counted from paper edge
+\topmargin=3mm
+\parindent=0mm
+\parskip=\baselineskip
+\textwidth=0.9\paperwidth
+\textheight=0.75\paperheight
+\oddsidemargin=0.05\paperwidth
+\evensidemargin=\oddsidemargin
+\headheight=22mm
+\headsep=\paperheight
+\addtolength{\headsep}{-\topmargin}
+\addtolength{\headsep}{-\textheight}
+\addtolength{\headsep}{-\headheight}
+\footskip=0.45\headsep
+\headsep=0.3\headsep
+ 
+% Define the fancyheadings style
+\headwidth=\textwidth
+\renewcommand{\headrulewidth}{2mm}
+\renewcommand{\footrulewidth}{2mm}
+\lhead{}
+\rhead{}
+\chead{}
+\lfoot{\@date}
+\cfoot{{\usebox{\Ftitle}\thepage}}
+\rfoot{\@author}
+
+% Command \Title (Colorbox with title for the title page)
+% The default width of the colorbox is 25cm.
+% Also by default a vertical spacing of 1cm will be applied after
+% the title box. To modify this spacing, the \vspace command should be used.
+% Format : \Title[colorbox width]{fill color}{title color}{title text}
+% Usage example : \Title[10cm]{yellow}{blue}{some text}
+\newcommand{\Title}[4][25cm]{%
+ \colorbox{#2}{\parbox{#1}{\begin{center}\Huge \bf
+ {\color{#3}#4}\end{center}}}\\[1cm]}
+
+% Command \Shahbox (shabox to be used in headers)
+% The following code is copied from the MikTex 2.6 shadow.sty
+% but the test on columnwidth in case of twocolumn mode
+% is removed and textwidth is used instead of txtwdth.
+% This will allow full width shabox headers also in case of twocolumn mode.
+\def\Shahbox#1{\setbox\@tempboxa\hbox{#1}%
+\shw\wd\@tempboxa
+\ifdim\shw<\textwidth 
+  \leavevmode\setbox\@tempboxa\hbox{#1}%
+\else
+  \typeout{Shahbox Warning: Box dimension greater than textwidth.}%
+  \setbox\@tempboxa\vbox{\hsize\textwidth\advance\hsize-2\sboxsep
+    \advance\hsize-2\sboxrule \advance\hsize-2\sdim \advance\hsize-15pt#1}%
+\fi
+ \setbox\shbox\hbox{\@tempdima\sboxrule
+     \advance\@tempdima \sboxsep \advance\@tempdima \dp\@tempboxa
+    \hbox{\lower \@tempdima\hbox
+   {\vbox{\hrule \@height \sboxrule
+           \hbox{\vrule \@width \sboxrule \hskip\sboxsep
+            \vbox{\vskip\sboxsep \box\@tempboxa\vskip\sboxsep}\hskip
+                         \sboxsep\vrule \@width \sboxrule}%
+                   \hrule \@height \sboxrule}}}}%
+\sht\ht\shbox \advance\sht-\sdim
+\leavevmode\vbox{\baselineskip0pt\lineskip0pt\vtop{%%     V1.2
+                                                   %%     Added \vtop
+                                                   %%     From M.Piff
+             \hbox{\copy\shbox\vrule width\sdim height\sht}%
+             \hbox{\kern\sdim\vrule height\sdim width \wd\shbox}}}}
+
+% Command \Scolorbox (shabox with colored inner field)
+% Format : \Scolorbox{rule}{lcolor}{sep}{fcolor}{sdim}{tcolor}{some text}
+% rule   = line width
+% lcolor = color of the box line
+% sep    = text separation
+% fcolor = color of the inner field
+% sdim   = shadow dimension
+% tcolor = color of the text
+% Usage example : \Scolorbox{1mm}{red}{5mm}{green}{2mm}{blue}{some text}
+\newdimen\oldsrule
+\newdimen\oldssep
+\newdimen\oldsdim
+\newdimen\oldfrule
+\newdimen\oldfsep
+\newcommand{\Scolorbox}[7]{%
+\oldsrule=\sboxrule
+\oldssep=\sboxsep
+\oldsdim=\sdim
+\oldfsep=\fboxsep
+\setlength{\sboxrule}{#1} 
+\setlength{\fboxsep}{#3} 
+\setlength{\sboxsep}{0pt} 
+\setlength{\sdim}{#5}
+{\color{#2}\shabox{\colorbox{#4}{\color{#6}{#7}}}}
+\sboxrule=\oldsrule
+\sboxsep=\oldssep
+\sdim=\oldsdim
+\fboxsep=\oldfsep
+}
+
+% Command \Shcolorbox (Shahbox with colored inner field)
+% Format : \Shcolorbox{rule}{lcolor}{sep}{fcolor}{sdim}{tcolor}{some text}
+% rule   = line width
+% lcolor = color of the box line
+% sep    = text separation
+% fcolor = color of the inner field
+% sdim   = shadow dimension
+% tcolor = color of the text
+% Usage example : \Shcolorbox{1mm}{red}{5mm}{green}{2mm}{blue}{some text}
+\newcommand{\Shcolorbox}[7]{%
+\oldsrule=\sboxrule
+\oldssep=\sboxsep
+\oldsdim=\sdim
+\oldfsep=\fboxsep
+\setlength{\sboxrule}{#1} 
+\setlength{\fboxsep}{#3} 
+\setlength{\sboxsep}{0pt} 
+\setlength{\sdim}{#5}
+{\color{#2}\Shahbox{\colorbox{#4}{\color{#6}{#7}}}}
+\sboxrule=\oldsrule
+\sboxsep=\oldssep
+\sdim=\oldsdim
+\fboxsep=\oldfsep
+}
+
+% Command \shacbox (Standard shabox with colored inner field)
+% For more flexibility see the command \Scolorbox
+% Format : \shacbox{fcolor}{tcolor}{some text}
+% fcolor = color of the inner field
+% tcolor = color of the text
+% Usage example : \shacbox{green}{blue}{some text}
+\newcommand{\shacbox}[3]{%
+\oldssep=\sboxsep
+\oldfsep=\fboxsep
+\fboxsep=\sboxsep
+\setlength{\sboxsep}{0.3pt} 
+\shabox{\colorbox{#1}{\color{#2}{#3}}}
+\sboxsep=\oldssep
+\fboxsep=\oldfsep
+}
+
+% Command \Tableofcontents
+% This command is kept for backward compatibility (use \Contsb instead).
+\def\Tableofcontents{%
+{\magenta
+\begin{center}\huge\bf \shabox{Table of Contents}\end{center}
+\huge \@starttoc{toc}}}
+
+% Command \Contents
+% This command is kept for backward compatibility (use \Contsb instead).
+\newcommand{\Contents}[1]{%
+{\color{magenta}
+\begin{center}\huge\bf \shabox{#1}\end{center}
+\huge \@starttoc{toc}}}
+
+% Command \Contc (Contents based on toc with colored title)
+% Format : \Contc{title color}{title text}{list color}
+% Usage example : \Contc{red}{some text}{blue}
+\newcommand{\Contc}[3]{%
+\begin{center}\huge\textcolor{#1}{\bf #2}\end{center}
+{\color{#3}\huge \@starttoc{toc}}}
+
+% Command \Contsb (Contents based on toc with shabox title)
+% Format : \Contsb{shabox color}{title color}{title text}{list color}
+% Usage example : \Contsb{red}{yellow}{some text}{blue}
+\newcommand{\Contsb}[4]{%
+\begin{center}\huge{\color{#1}\shabox{\textcolor{#2}{\bf #3}}}\end{center}
+{\color{#4}\huge \@starttoc{toc}}}
+
+% Command \Contcb (Contents based on toc with colorbox title)
+% Format : \Contcb{colorbox color}{title color}{title text}{list color}
+% Usage example : \Contcb{yellow}{blue}{some text}{red}
+\newcommand{\Contcb}[4]{%
+\begin{center}\huge{\colorbox{#1}{\textcolor{#2}{\bf #3}}}\end{center}
+{\color{#4}\huge \@starttoc{toc}}}
+
+% Command Contscb (Contents based on toc with shadowed colorbox title)
+% The default color for the shabox is black
+% Format : \Contscb[shabox color]{fill color}{title color}{title text}{list color}
+% Usage example : \Contscb[red]{yellow}{blue}{some text}{cyan}
+\newcommand{\Contscb}[5][black]{%
+\begin{center}\huge{\Scolorbox{0.8mm}{#1}{10pt}{#2}{4pt}{#3}{\bf #4}}\end{center}
+{\color{#5}\huge \@starttoc{toc}}}
+
+% Command Trtitle
+\newcommand{\Trtitle}[1]{\savebox{\Ftitle}{\sf \Large#1~~~}}
+
+% Command Transpar
+\newcommand{\Transpar}{\huge\newpage}
+
+% Command Tr
+\def\Tr{\protect\Transpar}
+
+% Command Tran (Transparancy with colored shabox title)
+% Format : \Tran[color]{title text}
+% This command is kept for backward compatibility (use \Transb instead).
+% The color of both the shabox and title text are the same.
+% The default color is blue for backward compatibility.
+% Usage example : \Tran[red]{some text}
+\newcommand{\Tran}[2][blue]{%
+\Tr\protect\typeout{#2}
+\chead{\protect\huge\protect{\color{#1}\shabox{{\bf #2}}}}
+\addcontentsline{toc}{section}{#2\protect\vspace*{-10mm}}}
+
+% Command Transb (Transparancy with colored shabox title)
+% Format : \Transb[shabox color]{title color}{title text}
+% The default shabox color is black
+% Usage example : \Transb[red]{yellow}{some text}
+\newcommand{\Transb}[3][black]{%
+\Tr\protect\typeout{#3}
+\chead{\protect\huge\protect{\color{#1}\Shahbox{\textcolor{#2}{\bf #3}}\vspace*{2mm}}}
+\addcontentsline{toc}{section}{#3\protect\vspace*{-10mm}}}
+
+% Command Tranc (Transparancy with colored title)
+% Format : \Tranc{title color}{title text}
+% Usage example : \Tranc{red}{some text}
+\newcommand{\Tranc}[2]{%
+\Tr\protect\typeout{#2}
+\chead{\protect\huge\protect{\textcolor{#1}{\bf #2}\vspace*{4mm}}}
+\addcontentsline{toc}{section}{#2\protect\vspace*{-10mm}}}
+
+% Command Trancb (Transparancy with colorbox title)
+% Format : \Trancb{colorbox color}{title color}{title text}
+% Usage example : \Trancb{yellow}{red}{some text}
+\newcommand{\Trancb}[3]{%
+\Tr\protect\typeout{#3}
+\chead{\protect\huge\protect{\colorbox{#1}{\textcolor{#2}{\bf #3}}\vspace*{4mm}}}
+\addcontentsline{toc}{section}{#3\protect\vspace*{-10mm}}}
+
+% Command Transcb (Transparancy with shadowed colorbox title)
+% The default color for the shabox is black
+% Format : \Transcb[shabox color]{fill color}{title color}{title text}
+% Usage example : \Transcb[red]{yellow}{blue}{some text}
+\newcommand{\Transcb}[4][black]{%
+\Tr\protect\typeout{#4}
+\chead{\protect\huge\protect{\Shcolorbox{0.8mm}{#1}{10pt}{#2}{4pt}{#3}{\bf #4}\vspace*{2mm}}}
+\addcontentsline{toc}{section}{#4\protect\vspace*{-10mm}}}
+
+\pagestyle{fancy}
+\sloppy
+
+% Line width for boxes and ovals
+\thicklines
+\setlength{\fboxrule}{0.5mm}
+\setlength{\fboxsep}{1mm}
+ 
+\endinput

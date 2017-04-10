@@ -1,0 +1,103 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                    
+% LaTeX style file to produce (color) text for textbook writing.
+%
+% By default the headers are produced via the Fancyheadings facility.
+%                                                                    
+% The package can be invoked by the following commands :  
+%
+%      \documentclass[12pt,a4paper,pdftex]{book}
+%      \usepackage[nocolor,boldmath,a4wide]{nvebook}
+%
+% Available options :
+% -------------------
+% nocolor  : produces black and white output instead of color
+% noams    : suppresses the (default) usage of the AMS math symbols
+% boldmath : produces all mathematical expressions in boldface
+% a4wide   : produces slightly wider lines on A4 paper using a4ws.sty
+%
+%--- Nick van Eijndhoven 30-july-2008
+%--- Modified by NvE 05-aug-2008
+% Environments "example", "Example", "exercise" and "Exercise" introduced.
+% Usage via the generic environment invokation, like \begin{example} ..... \end{example}
+% The environment names that start with a capital character are similar to the
+% lowercase ones, except that extra horizontal lines (rules) are produced
+% before and after the environment text.
+%--- Modified by NvE 16-jan-2013
+% Switch to use the package 'fancyhdr' instead of 'fancyheadings'.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\NeedsTeXFormat{LaTeX2e} 
+\ProvidesPackage{nvebook}[2013/01/16 Textbook facility version 1.0/3 NvE 16-jan-2013]
+
+\RequirePackage{ifthen}
+
+\newboolean{color}
+\setboolean{color}{true}
+
+\newboolean{a4w}
+\setboolean{a4w}{false}
+
+\DeclareOption{nocolor}{\setboolean{color}{false}}
+
+\DeclareOption{noams}{\PassOptionsToPackage{noams}{nvecmd}}
+
+\DeclareOption{boldmath}{\PassOptionsToPackage{boldmath}{nvecmd}}
+
+\DeclareOption{a4wide}{\setboolean{a4w}{true}}
+
+\ProcessOptions
+
+\ifthenelse{\boolean{color}}
+ {
+  \RequirePackage[color]{nvecmd}
+ }
+ {
+  \RequirePackage{nvecmd}
+ }
+
+\ifthenelse{\boolean{a4w}}
+ {
+  \RequirePackage{a4ws}
+ }
+
+\RequirePackage{fancyhdr}
+\RequirePackage{epsfig}
+\RequirePackage{rotating}
+\RequirePackage{floatfig}
+\RequirePackage{wrapfig}
+\RequirePackage{shadow}
+\RequirePackage{makeidx}
+\RequirePackage{theorem}
+ 
+% Define the fancyheadings style
+\renewcommand{\MakeUppercase}{}
+\headwidth=\textwidth
+\renewcommand{\headrulewidth}{0.3mm}
+\renewcommand{\footrulewidth}{0mm}
+\lhead[{\bf\thepage}]{\empty}
+\chead[{\bf \leftmark}]{{\bf \rightmark}}
+\rhead[\empty]{{\bf \thepage}}
+\lfoot[\empty]{\empty}
+\cfoot[\empty]{\empty}
+\rfoot[\empty]{\empty}
+
+\pagestyle{fancy}
+
+% Line width for boxes and ovals
+\thicklines
+\setlength{\fboxrule}{0.5mm}
+\setlength{\fboxsep}{1mm}
+
+% Definition of the "example", "Example", "exercise" and "Exercise" environments
+% Usage via the generic environment invokation, like \begin{example} ..... \end{example}
+\theoremstyle{break}
+\theorembodyfont{\normalfont\slshape}
+\newtheorem{example}{Example}[chapter]
+\newenvironment{Example}{\vspace{\baselineskip}\hrule\begin{example}}{\end{example}\hrule\vspace{\baselineskip}}
+\theoremstyle{break}
+\theorembodyfont{\normalfont\slshape}
+\newtheorem{exercise}{Exercise}[chapter]
+\newenvironment{Exercise}{\vspace{\baselineskip}\hrule\begin{exercise}}{\end{exercise}\hrule\vspace{\baselineskip}}
+ 
+\endinput

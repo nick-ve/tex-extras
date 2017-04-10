@@ -1,0 +1,139 @@
+\documentclass[a4paper,11pt,twocolumn,pdftex]{nveart}
+\usepackage{graphicx,amsmath,amssymb}
+
+\begin{document}
+
+\company{Some company}
+\journal{Submitted to some journal}
+
+\begin{frontmatter}
+\title{This is just some title}
+
+\author[Inst1]{Scientist1},
+\author[Inst3]{Scientist2\thanksref{someone1}},
+\author[Inst2]{Scientist3},
+\author[Inst2]{Scientist4},
+\author[Inst1]{Scientist5},
+\author[Inst2]{Scientist6},
+\author[Inst1]{Scientist7\thanksref{someone2}},
+\author[Inst2]{Scientist8},
+\author[Inst3]{Scientist9},
+\author[Inst2]{Scientist10},
+\author[Inst2]{Scientist11},
+\author[Inst3]{Scientist12} and
+\author[Inst1]{Scientist13}.
+
+\collab{Some collaboration}
+
+\address[Inst1]{Some department, Institute 1\\
+              Address of institue 1}
+\address[Inst2]{Some department, Institute 2\\
+              Address of institue 2}
+\address[Inst3]{Some department, Institute 3\\
+              Address of institue 3}
+\thanks[someone1]{Just some thanks}
+\thanks[someone2]{Just some more thanks}
+
+
+\begin{abstract}
+Just some text for the abstract. Just some text for the abstract. Just some text for the abstract.
+Just some text for the abstract. Just some text for the abstract. Just some text for the abstract.
+Just some text for the abstract. Just some text for the abstract.
+Just some text for the abstract. Just some text for the abstract. Just some text for the abstract.
+Just some text for the abstract.
+\end{abstract}
+
+\begin{keyword}
+Keyword 1,
+keyword 2,
+keyword 3.
+\PACS{xx.xx.xx, yyy.yy.y, z.zz.zzz} 
+\end{keyword}
+\end{frontmatter}
+
+\section{Introduction}
+Just some text for the introduction. Just some text for the introduction. Just some text for the introduction.
+Just some text for the introduction. Just some text for the introduction.\\
+Just some text for the introduction. Just some text for the introduction \cite{shock}. Just some text for the introduction.
+Just some text for the introduction. Just some text for the introduction.
+
+Just some text for the introduction \cite{pdg}. Just some text for the introduction. Just some text for the introduction.
+Just some text for the introduction. Just some text for the introduction. Just some text for the introduction.
+Just some text for the introduction.
+
+\section{Example for figures}
+This is some text preceding the figure. This is some text preceding the figure.
+This is some text preceding the figure. This is some text preceding the figure.
+This is some text preceding the figure. This is some text preceding the figure.
+This is some text preceding the figure.
+
+Below follows a figure (not included) with a caption, which can be referred to
+as Fig.~\ref{fig:jet}. In the source of the document a template is shown
+of how to include a figure.
+
+\begin{figure}[htb]
+\begin{center}
+%%%\includegraphics[keepaspectratio,width=5cm]{jet}
+\end{center}
+\caption{Some caption of a figure.}
+\label{fig:jet}
+\end{figure}
+
+This is some text following the figure. This is some text following the figure.
+This is some text following the figure. This is some text following the figure.
+This is some text following the figure. This is some text following the figure.
+This is some text following the figure. This is some text following the figure.
+This is some text following the figure.
+
+\section{Example for equations}
+This is some text preceding the equation. This is some text preceding the equation.
+This is some text preceding the equation. This is some text preceding the equation.
+This is some text preceding the equation. This is some text preceding the equation.\\
+Below follows an equation which can be referred to as Eq.~\eqref{eq:bayes}.
+%
+\begin{equation}
+p(B|AI)=p(B|I)\,\frac{p(A|BI)}{p(A|I)} \quad .
+\label{eq:bayes}
+\end{equation}
+%
+This is some text following the equation. This is some text following the equation.
+This is some text following the equation. This is some text following the equation.
+This is some text following the equation. This is some text following the equation.
+
+\subsection{Some subsection}
+Just some text for the subsection. Just some text for the subsection.
+Just some text for the subsection. Just some text for the subsection.
+Just some text for the subsection. Just some text for the subsection.
+Just some text for the subsection. Just some text for the subsection.
+
+\section*{An unnumbered section}
+Just some text for the unnumbered section. Just some text for the unnumbered section. 
+Just some text for the unnumbered section. Just some text for the unnumbered section. 
+Just some text for the unnumbered section. Just some text for the unnumbered section. 
+Just some text for the unnumbered section. 
+
+\section{Summary}
+Just some text for the summary. Just some text for the summary.
+Just some text for the summary. Just some text for the summary.
+Just some text for the summary. Just some text for the summary.
+Just some text for the summary.
+
+\begin{ack}
+Just some text for the acknowledgements. Just some text for the acknowledgements.
+Just some text for the acknowledgements. Just some text for the acknowledgements.
+Just some text for the acknowledgements. Just some text for the acknowledgements.
+Just some text for the acknowledgements. Just some text for the acknowledgements.
+\end{ack}
+
+\begin{thebibliography}{99}
+\bibitem{shock}
+ R. Blandford, D. Eichler, Phys. Rep. {\bf 154} (1987) 1.\\
+ A. Achterberg {\em et al.}, Mon. Not. Roy. Astron. Soc. {\bf 328} (2001) 393.
+\bibitem{pdg}
+ Particle Data Group, J. Phys. {\bf G33} (2006) 1. 
+\bibitem{nuflux}
+ E. Waxman, Astrophys. J. {\bf 452} (1995) L1.\\
+ E. Waxman, J. Bahcall, Phys. Rev. {\bf D59} (1999) 023002.
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,111 @@
+% ---------------------------------------------------------------------
+% This is a4.sty in text format.
+%
+% ---------------------------------------------------------------------
+% Editor     : Werenfried Spit
+%
+%         0.4: Maart 1990
+%              increased \textwidth for 11pt and 12pt
+%              modified the margins for twodsided printing so that
+%              text is printed in the same place on both pages
+%              modified marginparwidth's to fit on the paper
+%              modified the comments
+%
+%         1.3  adapted according to TUGboat 11(1990)98
+%         1.31 beetje gewijzigd (WS)
+% ---------------------------------------------------------------------
+\def\fileversion{1.31}
+\def\filedate{7 november 1990}
+\def\docdate {26 Feb 90}
+%
+\typeout{Style option `A4' \fileversion\space<\filedate> (NP, JLB and WS)}
+% \typeout{English documentation\space\space\space<\docdate> (JLB)}
+\topmargin 0pt
+\ifcase \@ptsize
+    \textheight 53\baselineskip
+\or
+    \textheight 46\baselineskip
+\or
+    \textheight 42\baselineskip
+\fi
+\advance\textheight by \topskip
+\ifcase \@ptsize
+%   \textwidth      5.00in
+    \textwidth      5.85in
+    \marginparwidth 1.00in
+  \if@twoside
+    \oddsidemargin  0.35in
+  \else
+%   \oddsidemargin  0.55in
+    \oddsidemargin  0.25in
+    \evensidemargin 0.25in
+  \fi
+\or
+%   \textwidth      5.20in
+    \textwidth      6.00in
+    \marginparwidth 1.00in
+  \if@twoside
+    \oddsidemargin  0.30in
+  \else
+%   \oddsidemargin  0.45in
+    \oddsidemargin  0.20in
+    \evensidemargin 0.20in
+  \fi
+\or
+%   \textwidth      5.70in
+    \textwidth      6.15in
+    \marginparwidth 0.80in
+  \if@twoside
+    \oddsidemargin  0.15in
+  \else
+%   \oddsidemargin  0.20in
+    \oddsidemargin  0.05in
+    \evensidemargin 0.05in
+  \fi
+\fi
+\def\WideMargins{%
+  \newdimen\ExtraWidth
+  \ifcase \@ptsize
+    \ExtraWidth = 0.5in
+    \@widemargins
+  \or
+    \ExtraWidth = 0.5in
+    \@widemargins
+  \or
+    \ExtraWidth = 0.7in
+    \@widemargins
+  \fi\let\WideMargins\relax\let\@widemargins\relax}
+{\def\do{\noexpand\do\noexpand}
+ \xdef\@preamblecmds{\@preamblecmds \do\WideMargins}
+}
+\def\@widemargins{%
+    \global\advance\textwidth by -\ExtraWidth
+    \global\advance\marginparwidth by \ExtraWidth
+    \if@twoside
+      \tw@sidedwidemargins
+    \else
+      \@nesidedwidemargins
+    \fi}
+\def\tw@sidedwidemargins{%
+    \if@reversemargin
+      \@tempdima=\evensidemargin
+      \advance\@tempdima by -\oddsidemargin
+      \advance\oddsidemargin by \ExtraWidth
+      \advance\oddsidemargin by \@tempdima
+      \advance\evensidemargin by -\@tempdima
+    \else
+      \advance\evensidemargin by \ExtraWidth
+    \fi}
+\def\@nesidedwidemargins{%
+    \if@reversemargin
+      \advance\oddsidemargin by \ExtraWidth
+      \advance\evensidemargin by \ExtraWidth
+    \fi}
+%
+% betere twoside optie (c) WS
+%
+\if@twoside
+\evensidemargin 6.05in%
+\advance\evensidemargin-\textwidth%
+\advance\evensidemargin-\oddsidemargin%
+\fi

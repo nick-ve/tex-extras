@@ -1,0 +1,249 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Header file to tailor output of ABC2MTEX music scores.
+%
+% ABC2MTEX is a preprocessor to MusiXTeX which converts
+% music scores written in the ABC language into MusiXTeX source.
+% 
+% The ABC2MTEX package is freely available from the LaTeX
+% distribution site(s).
+%
+% Usage :
+% -------
+% 1. Create a file (e.g. song.abc) containing the ABC music score.
+% 2. Issue the command "abc2mtex -x song:1".
+%    This will produce a file called music.tex containing the
+%    corresponding MusiXTeX source for the first entry in "song".
+% 3. Process the file music.tex in the usual way to obtain
+%    your music score in the LaTeX typeset output.
+%    The best result is obtained with the following 3-stage
+%    processing, which directly provides a pdf output file :
+%    a) pdflatex music 
+%    b) musixflx music
+%    c) pdflatex music
+%
+% For further details about the usage of the ABC music package
+% or the ABC2MTEX converter, please refer to the manual
+%
+% "ABC2MTEX - An easy way to transcribe folk and traditional music"
+%  by : Chris Walshaw (C.Walshaw@gre.ac.uk)
+%
+% Note : The interpretation of some of the information fields
+%        has been re-defined in this header file.
+%
+% The new conventions used here are :
+% -----------------------------------
+%
+% X:Reference number (obligatory)
+% T:Overall title of a music score (obligatory; should only be given once)
+% S:Additional info w.r.t. the title or source (optional)
+% C:Composer info (optional)
+% A:Instrument specification (optional)
+% P:Part/Movement specification (optional)
+% N:Additional info w.r.t. the part/movement (optional)
+%
+% Example of an abc input file structure :
+% ---------------------------------------- 
+% X:1
+% T:Impressions from the Roman Empire
+% S:(Extracts from various symphonies)
+% C:H. Hornblower (arr.)
+% A:Trumpet I
+% P:I. Intrada at the Colosseum
+% N:(Tempo di Marcia)
+% Q:1/8=60
+% M:2/4
+% K:C
+% (here follows the music score in ABC notation)
+%
+% X:2
+% T:
+% P:II. An evening with Cleopatra
+% N:(Sehr langsam)
+% M:4/4
+% K:C
+% (here follows the music score in ABC notation)
+%
+% Additional newly defined signs, accents etc...
+% ----------------------------------------------
+%
+% Large scale structure indications
+% O : Round Coda   (e.g. |O aGeF|)
+% Q : Square Coda  (e.g. |Q aGeF|)
+% S : Normal dal segno (e.g. |S aGeF|)
+% Y : Large dal segno (e.g. |Y aGeF|)
+% X : Repeat previous bar/Due volte (e.g. |X|)
+% Z : Rest of 10 bars (e.g. |Z|)
+% J : Rest of  5 bars (e.g. |J|)
+% N : New from the start/Da Capo (e.g. |aGeF N|])
+% 
+% Accents on notes
+% H : Sforzato (hat ^ above/below a note e.g. Ha)
+% P : Portato (- above/below a note e.g. Pa)
+% S : Sforzando (> above/below a note e.g. Sa)
+% L : Fermata (long) above the staff (e.g. |aGeF z3 L|)
+% L : Fermata (long) above a note (e.g. |aGeF Lc4|)
+% T : Trill above the staff (e.g. |T aGeF|)
+% T : Trill above a note (e.g. |aGTeF|)
+%
+% Indications of dynamics
+% R : Ritenuto (e.g. |aG R eF|)
+% H : Hurry/Accelerando (e.g. |aG H eF|)
+% I : Increase volume/Crescendo (e.g. |I aGeF| or |aGIeF|)
+% W : Weaken volume/Diminuendo (e.g. |W aGeF| or |aGWeF|)
+% U : Breath/Caesura (e.g. |aG U eF|)
+% V : Volume (e.g. |aG MPV eF|)
+%     where the various volume levels are combinations of :
+%     P : Piano    K : Kraftig/Forte   M : Mezzo
+%
+% Author : Nick van Eijndhoven, NCFS 01-nov-2007.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[a4paper]{nveart}
+\usepackage{musixtex}
+\pagestyle{plain}
+
+\input musixlit
+\input musixeng
+
+\mathversion{bold}
+
+\begin{document}
+
+% Page set-up
+% -----------
+\vsize=0.8\paperheight
+\hsize=0.9\paperwidth
+\hoffset=-1in                  % Remove blank area such that sidemargin is counted from paper edge
+\voffset=-1in                  % Remove blank area such that topmargin is counted from paper edge
+\textwidth=\hsize              % Text width
+\textheight=\vsize             % Text height
+\oddsidemargin=0.05\paperwidth % Left margin on odd-numbered pages.
+\evensidemargin=\oddsidemargin % Left margin on even-numbered pages.
+\marginparwidth=0pt            % Don't reserve space for margin notes
+\marginparsep=0pt
+\marginparpush=0pt
+\topmargin=0.08\paperheight    % Offset from top of page
+\footskip=\topmargin           % Offset of page number from text
+
+% Music set-up
+% ------------
+%\smallmusicsize                    % Use small size
+\def\freqbarno{10}                  % Bar number after every 10 bars
+\def\stdafterruleskip{2\Internote}  % Space between bar and next note
+\parindent 0pt                      % No indentation
+
+% Fonts set-up
+% ------------
+\font\Tifont=cmr10 % For Tline entries within tunes
+\font\Wfont=cmr10  % For Wline entries within tunes
+\font\Pfont=cmr7   % For Pline entries within tunes
+\font\gfont=cmr7   % For guitar chords
+\font\sevenrm=cmr7 % For numerical indications like e.g. in triplets 
+
+% these lines prevent/allow pagebreaking in the middle of tunes
+%\let\tune=\vbox
+\let\tune=\empty
+
+% Tune header set-up
+% ------------------
+\def\header{%
+\if Y\Ttrue{\centerline{\bf{\huge \Tstring}}\vspace*{2mm}}\fi%
+\if Y\Strue{\centerline{\large \Sstring}\nobreak}\fi%
+\vspace*{1cm}
+\if Y\Ctrue{\hbox to\hsize{\hfil{\large \Cstring}}\vspace*{5mm}}\fi%
+\if Y\Atrue{\hbox to\hsize{{\large \Astring}\hfil}\vspace*{3mm}}\fi%
+\if Y\Ptrue{\centerline{\bf{\Large \Pstring}}\vspace{2mm}}\fi%
+\if Y\Ntrue{\centerline{\large \Nstring}\vspace{2mm}}\fi%
+}
+
+% Text within tunes
+% -----------------
+\def\Tline#1{\medskip\line{\Tifont #1\hfil}}
+\def\Wline#1{\smallskip\line{\Wfont #1\hfil}}
+\def\Pline#1{\notes\uptext{\Pfont #1}\enotes\relax}
+
+% (Re)definition of some auto-generated commands
+% to comply with the MusiXTeX syntax.
+% ---------------------------------------------
+%\let\startmuflex=\empty % To omit warning from second \startmuflex in \startpiece
+\renewcommand{\endmuflex}{\end{document}}
+\let\beginHp=\empty
+\let\endHp=\empty
+
+% Up and Down bows
+% ----------------
+\def\ubow#1{\zcharnote#1{\upbow}}
+\def\vbow#1{\zcharnote#1{\downbow}}
+
+% Gracing notes
+% -------------
+\def\grace{\notes\multnoteskip\tinyvalue\tinynotesize}
+\let\egrace=\enotes
+
+% Rolls
+% -----
+\def\uroll#1{\zcharnote{#1}{\raise -3.0\internote\hbox to 2.5\internote%
+ {\hss$\smile$\hss}}}
+\def\lroll#1{\zcharnote{#1}{\raise  1.0\internote\hbox to 2.5\internote%
+ {\hss$\frown$\hss}}}
+
+% Additional user defined signs, accents etc...
+% ---------------------------------------------
+%
+% Shorthands for # and b in Guitar chords
+\def\#{$^\sharp$} % sharp symbol #
+\def\b{$^\flat$}  % flat symbol b
+%
+% Large scale structure indications
+\def\userO{\Uptext{\coda1}}                        % Round Coda
+\def\userQ{\Uptext{\Coda1}}                        % Square Coda
+\def\userS{\bsk\Uptext{\segno1}\sk}                % Normal dal segno
+\def\userY{\notes\sk\zchar0{\Segno}\sk\enotes}     % Large dal segno
+\def\userX{\notes\hsk\zchar0{\duevolte}\sk\enotes} % Repeat previous bar (Due volte)
+\def\userZ{\notes\zchar5{\Hpause0 3}\sk\uptext{\large \bf 10}\sk\sk\sk\enotes \advance\barno 9} % Rest of 10 bars
+\def\userJ{\notes\zchar5{\Hpause0 2}\sk\uptext{\large \bf 5}\sk\hsk\enotes \advance\barno 4}    % Rest of 5 bars
+\def\userN{\notes\zchar{-5}{\large \bf D.C.}\sk\hsk\enotes}     % Da capo (new from the start)
+% 
+% Accents on notes
+\def\userHl#1{\usfz#1}                          % Sforzato (hat ^ above note when stem down)
+\def\userHu#1{\lsfz#1}                          % Sforzato (hat v below note when stem up)
+\def\userPl#1{\ust#1}                           % Portato (- above note when stem down)
+\def\userPu#1{\lst#1}                           % Portato (- below note when stem up)
+\def\userSl#1{\usf#1}                           % Sforzando (> above note when stem down)
+\def\userSu#1{\lsf#1}                           % Sforzando (> below note when stem up)
+\def\userL{\notes\uptext{\fermataup0}\enotes}   % Fermata (above the staff)
+\def\userLl#1{\fermataup#1}                     % Fermata (above the note when stem down)
+\def\userLu#1{\uptext{\fermataup0}}             % Fermata (above the staff when stem up)
+\def\userT{\notes\uptext{\TrilleX0 2}\enotes}   % Trill (above the staff)
+\def\userTl#1{\zcharnote#1{\trilleX4 1}}        % Trill (above the note when stem down)
+\def\userTu#1{\uptext{\trilleX0 1}}             % Trill (above the staff when stem up)
+%
+% Indications of dynamics
+\def\userR{\notes\cchar{-5}{rit.}\hsk\enotes}           % Ritenuto
+\def\userH{\notes\cchar{-5}{accel.}\hsk\enotes}         % Accelerando (Hurry)
+\def\userI{\notes\cchar{-5}{cresc.}\hsk\enotes}         % Crescendo (Increase volume)
+\def\userIl#1{\zchar{-4}{\crescendo{2\noteskip}}}       % Crescendo (below the staff when stem down)
+\def\userIu#1{\zchar{-4}{\crescendo{2\noteskip}}}       % Crescendo (below the staff when stem up)
+\def\userW{\notes\cchar{-5}{dim.}\hsk\enotes}           % Diminuendo (Weaken volume)
+\def\userWl#1{\zchar{-4}{\decrescendo{2\noteskip}}}     % Diminuendo (below the staff when stem down)
+\def\userWu#1{\zchar{-4}{\decrescendo{2\noteskip}}}     % Diminuendo (below the staff when stem up)
+\def\userU{\notes\cbreath\enotes}                       % Breath comma above the staff
+\def\userUl#1{\cbreath}                                 % Breath comma above the staff (when stem down)
+\def\userUu#1{\cbreath}                                 % Breath comma above the staff (when stem up)
+\newcounter{V}\setcounter{V}{0}%
+\newcommand{\userP}{\addtocounter{V}{-1}}               % Piano
+\newcommand{\userK}{\addtocounter{V}{1}}                % Forte (Kraftig)
+\newcommand{\userM}{\addtocounter{V}{10}}               % Mezzo
+\newcommand{\userV}{%                                   % Volume
+\ifthenelse{\value{V}=-1}{\notes\cchar{-4}{\p}\bsk\enotes}{}%
+\ifthenelse{\value{V}=-2}{\notes\cchar{-4}{\pp}\bsk\enotes}{}%
+\ifthenelse{\value{V}=-3}{\notes\cchar{-4}{\ppp}\bsk\enotes}{}%
+\ifthenelse{\value{V}=-4}{\notes\cchar{-4}{\pppp}\bsk\enotes}{}%
+\ifthenelse{\value{V}=1}{\notes\cchar{-4}{\f}\bsk\enotes}{}%
+\ifthenelse{\value{V}=2}{\notes\cchar{-4}{\ff}\bsk\enotes}{}%
+\ifthenelse{\value{V}=3}{\notes\cchar{-4}{\fff}\bsk\enotes}{}%
+\ifthenelse{\value{V}=4}{\notes\cchar{-4}{\ffff}\bsk\enotes}{}%
+\ifthenelse{\value{V}=9}{\notes\cchar{-4}{\mp}\bsk\enotes}{}%
+\ifthenelse{\value{V}=11}{\notes\cchar{-4}{\mf}\bsk\enotes}{}%
+\ifthenelse{\value{V}=0}{\notes\cchar{-4}{\fp}\bsk\enotes}{}%
+\setcounter{V}{0}%
+}%

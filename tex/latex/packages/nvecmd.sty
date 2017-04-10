@@ -1,0 +1,281 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                    
+% LaTeX style file to provide private commands
+%                                                                    
+% The package can be invoked by one of the two following commands :  
+%
+%   1) Old LaTeX format
+%      \documentstyle[...,nvecmd]{article}
+%
+%   2) LaTeX2e format
+%      \documentclass[a4paper]{article}
+%      \usepackage{nvecmd}
+%
+% Available options :
+% -------------------
+% color    : produces color text instead of the default black and white
+% noams    : suppresses the (default) usage of the AMS math symbols
+% boldmath : produces all mathematical expressions in boldface
+%
+%--- NvE 16-jul-1999 UU-SAP Utrecht
+%--- Modified NvE 28-jan-2000
+% New commands \blue etc... introduced to allow easy color setting
+% in using the standard LaTeX color.sty package.
+%--- Modified NvE 15-feb-2000
+% Various handy commands like \nuc \FMslash \d etc... introduced
+% analogous to the elsart class.
+%--- Modified by NvE 25-feb-2000
+% Additional package 'pifont.sty' invoked to enable standard LaTeX
+% special symbols ZapfDingbats and Symbol.
+%
+% Usage : (1 < n < 255)
+% -------
+% \Pisymbol{psy}{n} : Symbol number n
+% \Pisymbol{pzd}{n} : ZapfDingbat number n (equivalent to \ding{n})
+%
+% \begin{dinglist}{n}
+% \item .... Items will have \ding{n} as a 'bullet'
+% \end{dinglist}
+%
+% \begin{dingautolist}{n}
+% \item .... Items will have \ding{n}, \ding{n+1} etc...  as a 'bullet'
+% \end{dinglist}
+%
+% \dingline{n} : yields a whole line full of \ding{n} symbols
+%
+% \dingfill{n} : fills the remaining of the line with \ding{n} symbols
+%
+% The corresponding general commands for the 'pzd' and 'psy' fonts are :
+% 
+% \begin{Pilist}{pzd}{n}  \begin{Piautolist}{pzd}{n}  \Piline{pzd}{n} \Pifill{pzd}{n}
+%
+% Some frequently used ZapfDingbat symbols :
+%
+% \ding{52}      : check mark
+% \ding{34}      : scissors icon
+% \ding{37}      : telephone icon
+% \ding{40}      : airplane icon
+% \ding{41}      : letter icon
+% \ding{42}      : pointing black hand
+% \ding{43}      : pointing white hand
+% \ding{45}      : white hand with pencil
+% \ding{46-48}   : pencil icons
+% \ding{55-56}   : scratch/delete icons
+% \ding{57-60}   : various crosses
+% \ding{61-63}   : cemetary cross icons
+% \ding{70-107}  : various star symbols
+% \ding{108}     : black circle
+% \ding{110}     : black square
+% \ding{111-114} : various 'tick mark boxes'
+% \ding{115}     : black triangle up
+% \ding{116}     : black triangle down
+% \ding{117}     : rotated black square
+% \ding{169}     : black diamond
+% \ding{168-171} : black playing cards icons
+% \ding{172-211} : Subsequent numbers 1,..,9,0 in open and filled circles 
+% \ding{228}     : black 'chevron pointer'
+%
+% Some useful Symbol font characters :
+%
+% 164     : large slash
+% 167-170 : black playing cards icons
+% 176     : degree sign
+% 168     : black diamond
+% 224     : open diamond
+% 210-212 : Registered, Copyright and TradeMark signs 
+% 226-228 : Registered, Copyright and TradeMark signs 
+%
+%--- Modified by NvE 29-jan-2002
+% Support for euro symbol introduced via \Euro for both math and text mode
+%--- Modified by NvE 02-may-2002
+% Some new colors (e.g. gray, darkblue etc...) introduced
+%--- Modified by NvE 23-feb-2003
+% Actual setting of boldmath and color selection performed in this style file
+% so that nvecmd.sty can be used standalone to also produce the various color
+% facilities in combination with private color commands.
+%--- Modified by NvE 03-nov-2003
+% Support for both A and Z indication introduced via command \Nuc
+%--- Modified by NvE 19-feb-2004
+% Additional package 'latexsym.sty' invoked to enable additional standard LaTeX
+% mathematical symbols like \mho, \Box, \Diamond etc...
+%--- Modified by NvE 25-feb-2004
+% Support for unity and zero matrix symbols introduced via $\1mat$ and $\0mat$
+%--- Modified by NvE 15-aug-2004
+% Re-definition of some colors to get identical results for .ps and .pdf
+%--- Modified by NvE 25-may-2005
+% New boolean mbold introduced to indicate the selection of boldmath.
+% This will allow to increase the linethickness for fractions (i.e. redefine
+% the \frac command) in case also the amsmath package is used.
+% By default the fraction's linethickness is increased from 0.4pt to 0.4mm
+% to produce more clear results for beamer presentations. 
+%--- Modified by NvE 06-jan-2006
+% Explicit display of logbase 10 introduced via \Log in math mode  
+%--- Modified by NvE 27-oct-2007
+% Command \Fcvec introduced to indicate covariant 4-vectors
+%--- Modified by NvE 03-aug-2008
+% Environments "example", "Example", "exercise" and "Exercise" introduced.
+% Usage via the generic environment invokation, like \begin{example} ..... \end{example}
+% The environment names that start with a capital character are similar to the
+% lowercase ones, except that extra horizontal lines (rules) are produced
+% before and after the environment text.
+%--- Modified by NvE 05-aug-2008
+% Environments "example", "Example", "exercise" and "Exercise" moved to the
+% package nvebook.sty because of nonexisting "chapter" counter in case of letters.
+%--- Modified by NvE 15-jan-2011
+% Command \Op introduced to indicate operators in blackboard style characters
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\NeedsTeXFormat{LaTeX2e} 
+\ProvidesPackage{nvecmd}[2011/01/15 Private commands version 1.0/17 NvE 15-jan-2011]
+
+\RequirePackage{ifthen}
+
+\newboolean{ams}
+\setboolean{ams}{true}
+
+\newboolean{colour}
+\setboolean{colour}{false}
+
+\newboolean{mbold}
+\setboolean{mbold}{false}
+
+\DeclareOption{noams}{\setboolean{ams}{false}}
+
+\DeclareOption{boldmath}{\setboolean{mbold}{true}}
+
+\DeclareOption{color}{\setboolean{colour}{true}}
+
+\ProcessOptions
+
+\ifthenelse{\boolean{ams}}
+ {
+  \RequirePackage{amsmath}
+  \RequirePackage{amssymb}
+ }
+ {
+  \RequirePackage{amsbsy}
+  \RequirePackage{amstext}
+ }
+
+\ifthenelse{\boolean{colour}}
+ {
+  \RequirePackage{colordvi}
+  \RequirePackage{color}
+ }
+ {
+  \RequirePackage{blackdvi}
+  \RequirePackage[monochrome]{color}
+ }
+
+\RequirePackage{pifont}
+\RequirePackage{latexsym}
+
+\ifthenelse{\boolean{mbold}}
+ {
+  \mathversion{bold}
+  \ifthenelse{\boolean{ams}}
+   {
+    \renewcommand{\frac}[2]{\genfrac{}{}{0.4mm}{}{#1}{#2}}
+   }
+ }
+ 
+% Some useful definitions for getting ``funny'' characters
+%\def\bs{{\rm\tt\char92{}}}  %%%%% backslash         %%%%%
+%\def\lqb{{\`{}}}            %%%%% left quote brace  %%%%%
+%\def\rqb{{\'{}}}            %%%%% right quote brace %%%%%
+%\def\lcb{{\tt\char'173{}}}  %%%%% left brace        %%%%%
+%\def\rcb{{\tt\char'175{}}}  %%%%% right brace       %%%%%
+%\def\lsb{{\tt\char'133{}}}  %%%%% left brace        %%%%%
+%\def\rsb{{\tt\char'135{}}}  %%%%% right brace       %%%%%
+%\def\lab{{\tt\char'74{}}}   %%%%% left brace        %%%%%
+%\def\rab{{\tt\char'76{}}}   %%%%% right brace       %%%%%
+%\def\vsp{{\tt\char32{}}}    %%%%% visual space      %%%%%
+%\def\vb{{\tt\char'174{}}}   %%%%% vertical bar      %%%%%
+
+% $\Op{H}$ Denotes a (Quantum) operator in blackboard character style
+\newcommand{\Op}[1]{\mathbb{#1}}
+
+% $\Fcvec{p}$ Denotes a covariant 4-vector with a tilde below
+\newcommand{\Fcvec}[1]{\underset{\textstyle\tilde{}}#1}
+
+% $\Fvec{p}$ Denotes a contravariant 4-vector with a tilde above
+\newcommand{\Fvec}[1]{\tilde{#1}}
+
+% $\Slash{p}$ Denotes a slashed p
+\newcommand{\Slash}[1]{#1\!\!\!\!\!\not~}
+
+% $\Log$ Denotes explicitly the base 10 in the log function
+\newcommand{\Log}{\log_{10}}
+
+% Various color settings based on the standard LaTeX color.sty package.
+% Examples :
+% {\blue ...}                --> the text '...' in blue.
+% \blue                      --> all following text in blue until another color is activated. 
+% \colorbox{red}{...}        --> the text '...' on a red background.
+% \fcolorbox{blue}{red}{...} --> the text '...' on a red background with a blue border.
+% \pagecolor{green}          --> green page background until another color is activated.  
+% If you want to use these commands, you have to invoke the 'color' package.
+%%% Re-definition of some colors to obtain identical results
+%%% for .ps and .pdf output
+\definecolor{yellow}{rgb}{1,1,0.1}
+\definecolor{cyan}{rgb}{0,1,1}
+\definecolor{magenta}{rgb}{1,0,1}
+
+\newcommand{\black}{\color{black}}
+\newcommand{\white}{\color{white}}
+\newcommand{\red}{\color{red}}
+\newcommand{\green}{\color{green}}
+\newcommand{\blue}{\color{blue}}
+\newcommand{\yellow}{\color{yellow}}
+\newcommand{\cyan}{\color{cyan}}
+\newcommand{\magenta}{\color{magenta}}
+
+\definecolor{gray}{gray}{0.75}
+\definecolor{darkgray}{gray}{0.5}
+\definecolor{darkred}{rgb}{0.5,0,0}
+\definecolor{darkblue}{rgb}{0,0,0.5}
+\newcommand{\gray}{\color{gray}}
+\newcommand{\darkgray}{\color{darkgray}}
+\newcommand{\darkred}{\color{darkred}}
+\newcommand{\darkblue}{\color{darkblue}}
+
+%%% Slash through a letter (Feynman notation) 
+\newbox\slashbox \setbox\slashbox=\hbox{$/$}
+\newbox\Slashbox \setbox\Slashbox=\hbox{\large$/$}
+\def\pFMslash#1{\setbox\@tempboxa=\hbox{$#1$}
+  \@tempdima=0.5\wd\slashbox \advance\@tempdima 0.5\wd\@tempboxa
+  \copy\slashbox \kern-\@tempdima \box\@tempboxa}
+\def\pFMSlash#1{\setbox\@tempboxa=\hbox{$#1$}
+  \@tempdima=0.5\wd\Slashbox \advance\@tempdima 0.5\wd\@tempboxa
+  \copy\Slashbox \kern-\@tempdima \box\@tempboxa}
+\def\FMslash{\protect\pFMslash}
+\def\FMSlash{\protect\pFMSlash}
+
+%%% Blackboard characters to denote various mathematical sets of numbers
+\def\Nset{\mathbb{N}} % set of positive integer numbers
+\def\Zset{\mathbb{Z}} % set of integer numbers
+\def\Qset{\mathbb{Q}} % set of rational numbers
+\def\Rset{\mathbb{R}} % set of real numbers
+\def\Cset{\mathbb{C}} % set of complex numbers
+\def\Hset{\mathbb{H}} % set of quaternions
+
+%%% Indications of nuclei like e.g. \nuc{208}{Pb} and \itnuc{208}{Pb}
+\def\nuc#1#2{\relax\ifmmode{}^{#1}{\protect\text{#2}}\else${}^{#1}$#2\fi}
+
+%%% Indications of nuclei with A and Z values like e.g. \Nuc{4}{2}{He}
+\def\Nuc#1#2#3{\relax\ifmmode{}^{#1}_{#2}{\protect\text{#3}}\else${}^{#1}_{#2}$#3\fi}
+
+%%% Shortcut for 'roman d' in derivatives
+\def\d{\mathrm{d}}
+
+%%% Make euro sign available via \Euro both in math and text mode
+\def\Euro{%
+\ifmmode\mathcal{C}\!\!\!\!\text{\raisebox{0.5ex}{\tiny=}}%
+\else$\mathcal{C}\!\!\!\!\text{\raisebox{0.5ex}{\tiny=}}$%
+\fi}
+
+%%% Symbols to indicate special matrices
+\def\1mat{\mathbb{I}} % unity matrix
+\def\0mat{\mathbb{O}} % zero matrix
+ 
+\endinput
