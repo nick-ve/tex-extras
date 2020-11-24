@@ -82,10 +82,13 @@
 % These new commands are used in \Transb and \Transcb.
 %--- Modified by NvE 16-jan-2013
 % Switched to use the package 'fancyhdr' instead of 'fancyheadings'.
+%--- Modified by NvE 24-nov-2020
+% Commands \shacbox and \Scolorbox moved into nvecmd.sty so that these
+% can also be used outside this transparancy facility (e.g. for posters).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NeedsTeXFormat{LaTeX2e} 
-\ProvidesPackage{nvefoil}[2013/01/16 Transparancy facility version 2.1/6 NvE 16-jan-2013]
+\ProvidesPackage{nvefoil}[2020/11/24 Transparancy facility version 2.1/7 NvE 24-nov-2020]
 
 % Set Computer Modern Sans Serif as default font
 \renewcommand{\familydefault}{cmss}
@@ -211,36 +214,6 @@
              \hbox{\copy\shbox\vrule width\sdim height\sht}%
              \hbox{\kern\sdim\vrule height\sdim width \wd\shbox}}}}
 
-% Command \Scolorbox (shabox with colored inner field)
-% Format : \Scolorbox{rule}{lcolor}{sep}{fcolor}{sdim}{tcolor}{some text}
-% rule   = line width
-% lcolor = color of the box line
-% sep    = text separation
-% fcolor = color of the inner field
-% sdim   = shadow dimension
-% tcolor = color of the text
-% Usage example : \Scolorbox{1mm}{red}{5mm}{green}{2mm}{blue}{some text}
-\newdimen\oldsrule
-\newdimen\oldssep
-\newdimen\oldsdim
-\newdimen\oldfrule
-\newdimen\oldfsep
-\newcommand{\Scolorbox}[7]{%
-\oldsrule=\sboxrule
-\oldssep=\sboxsep
-\oldsdim=\sdim
-\oldfsep=\fboxsep
-\setlength{\sboxrule}{#1} 
-\setlength{\fboxsep}{#3} 
-\setlength{\sboxsep}{0pt} 
-\setlength{\sdim}{#5}
-{\color{#2}\shabox{\colorbox{#4}{\color{#6}{#7}}}}
-\sboxrule=\oldsrule
-\sboxsep=\oldssep
-\sdim=\oldsdim
-\fboxsep=\oldfsep
-}
-
 % Command \Shcolorbox (Shahbox with colored inner field)
 % Format : \Shcolorbox{rule}{lcolor}{sep}{fcolor}{sdim}{tcolor}{some text}
 % rule   = line width
@@ -263,22 +236,6 @@
 \sboxrule=\oldsrule
 \sboxsep=\oldssep
 \sdim=\oldsdim
-\fboxsep=\oldfsep
-}
-
-% Command \shacbox (Standard shabox with colored inner field)
-% For more flexibility see the command \Scolorbox
-% Format : \shacbox{fcolor}{tcolor}{some text}
-% fcolor = color of the inner field
-% tcolor = color of the text
-% Usage example : \shacbox{green}{blue}{some text}
-\newcommand{\shacbox}[3]{%
-\oldssep=\sboxsep
-\oldfsep=\fboxsep
-\fboxsep=\sboxsep
-\setlength{\sboxsep}{0.3pt} 
-\shabox{\colorbox{#1}{\color{#2}{#3}}}
-\sboxsep=\oldssep
 \fboxsep=\oldfsep
 }
 

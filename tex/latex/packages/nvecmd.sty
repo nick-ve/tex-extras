@@ -123,12 +123,17 @@
 % package nvebook.sty because of nonexisting "chapter" counter in case of letters.
 %--- Modified by NvE 15-jan-2011
 % Command \Op introduced to indicate operators in blackboard style characters
+%--- Modified by NvE 24-nov-2020
+% Command \Contact introduced to facilitate contact info in title composition
+% of e.g. posters. The user provided text is available in the variable \@Contact.
+% Also the commands \shacbox and \Scolorbox moved from nvefoil.sty into here.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NeedsTeXFormat{LaTeX2e} 
-\ProvidesPackage{nvecmd}[2011/01/15 Private commands version 1.0/17 NvE 15-jan-2011]
+\ProvidesPackage{nvecmd}[2020/11/24 Private commands version 1.0/18 NvE 24-nov-2020]
 
 \RequirePackage{ifthen}
+\RequirePackage{shadow}
 
 \newboolean{ams}
 \setboolean{ams}{true}
@@ -277,5 +282,55 @@
 %%% Symbols to indicate special matrices
 \def\1mat{\mathbb{I}} % unity matrix
 \def\0mat{\mathbb{O}} % zero matrix
+
+%%% Provide a string via the variable \@Contact
+%%% This may be used in the title creation of e.g. posters
+\newcommand{\Contact}[1]{\def\@Contact{#1}}
+
+% Command \Scolorbox (shabox with colored inner field)
+% Format : \Scolorbox{rule}{lcolor}{sep}{fcolor}{sdim}{tcolor}{some text}
+% rule   = line width
+% lcolor = color of the box line
+% sep    = text separation
+% fcolor = color of the inner field
+% sdim   = shadow dimension
+% tcolor = color of the text
+% Usage example : \Scolorbox{1mm}{red}{5mm}{green}{2mm}{blue}{some text}
+\newdimen\oldsrule
+\newdimen\oldssep
+\newdimen\oldsdim
+\newdimen\oldfrule
+\newdimen\oldfsep
+\newcommand{\Scolorbox}[7]{%
+\oldsrule=\sboxrule
+\oldssep=\sboxsep
+\oldsdim=\sdim
+\oldfsep=\fboxsep
+\setlength{\sboxrule}{#1} 
+\setlength{\fboxsep}{#3} 
+\setlength{\sboxsep}{0pt} 
+\setlength{\sdim}{#5}
+{\color{#2}\shabox{\colorbox{#4}{\color{#6}{#7}}}}
+\sboxrule=\oldsrule
+\sboxsep=\oldssep
+\sdim=\oldsdim
+\fboxsep=\oldfsep
+}
+
+% Command \shacbox (Standard shabox with colored inner field)
+% For more flexibility see the command \Scolorbox
+% Format : \shacbox{fcolor}{tcolor}{some text}
+% fcolor = color of the inner field
+% tcolor = color of the text
+% Usage example : \shacbox{green}{blue}{some text}
+\newcommand{\shacbox}[3]{%
+\oldssep=\sboxsep
+\oldfsep=\fboxsep
+\fboxsep=\sboxsep
+\setlength{\sboxsep}{0.3pt} 
+\shabox{\colorbox{#1}{\color{#2}{#3}}}
+\sboxsep=\oldssep
+\fboxsep=\oldfsep
+}
  
 \endinput
