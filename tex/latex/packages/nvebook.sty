@@ -2,11 +2,11 @@
 %                                                                    
 % LaTeX style file to produce (color) text for textbook writing.
 %
-% By default the headers are produced via the Fancyheadings facility.
+% By default the headers are produced via the fancyhdr facility.
 %                                                                    
 % The package can be invoked by the following commands :  
 %
-%      \documentclass[12pt,a4paper,pdftex]{book}
+%      \documentclass[12pt,a4paper]{book}
 %      \usepackage[nocolor,boldmath,a4wide]{nvebook}
 %
 % Available options :
@@ -25,10 +25,13 @@
 % before and after the environment text.
 %--- Modified by NvE 16-jan-2013
 % Switch to use the package 'fancyhdr' instead of 'fancyheadings'.
+%--- Modified by NvE 30-nov-2020
+% Packages fancyhdr, graphicx, epsfig, rotating, shadow, wrapfig and floatflt
+% now included automatically via nvecmd.sty
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NeedsTeXFormat{LaTeX2e} 
-\ProvidesPackage{nvebook}[2013/01/16 Textbook facility version 1.0/3 NvE 16-jan-2013]
+\ProvidesPackage{nvebook}[2020/11/30 Textbook facility version 1.0/4 NvE 30-nov-2020]
 
 \RequirePackage{ifthen}
 
@@ -61,18 +64,13 @@
   \RequirePackage{a4ws}
  }
 
-\RequirePackage{fancyhdr}
-\RequirePackage{epsfig}
-\RequirePackage{rotating}
-\RequirePackage{floatfig}
-\RequirePackage{wrapfig}
-\RequirePackage{shadow}
 \RequirePackage{makeidx}
 \RequirePackage{theorem}
  
 % Define the fancyheadings style
 \renewcommand{\MakeUppercase}{}
 \headwidth=\textwidth
+\headheight=15pt
 \renewcommand{\headrulewidth}{0.3mm}
 \renewcommand{\footrulewidth}{0mm}
 \lhead[{\bf\thepage}]{\empty}

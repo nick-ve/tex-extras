@@ -127,13 +127,25 @@
 % Command \Contact introduced to facilitate contact info in title composition
 % of e.g. posters. The user provided text is available in the variable \@Contact.
 % Also the commands \shacbox and \Scolorbox moved from nvefoil.sty into here.
+%--- Modified by NvE 30-nov-2020
+% Command \Contact removed to avoid possible clashes.
+% If needed a similar command may be introduced in a LaTex style file
+% like for instance in nveposter.sty.
+% Also the packages fancyhdr, graphicx, epsfig, rotating, wrapfig and floatflt included.
+% The latter two enable text wrapping around figures and tables.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NeedsTeXFormat{LaTeX2e} 
-\ProvidesPackage{nvecmd}[2020/11/24 Private commands version 1.0/18 NvE 24-nov-2020]
+\ProvidesPackage{nvecmd}[2020/11/30 Private commands version 1.0/18 NvE 30-nov-2020]
 
 \RequirePackage{ifthen}
 \RequirePackage{shadow}
+\RequirePackage{fancyhdr}
+\RequirePackage{graphicx}
+\RequirePackage{epsfig}
+\RequirePackage{rotating}
+\RequirePackage{wrapfig}
+\RequirePackage{floatflt}
 
 \newboolean{ams}
 \setboolean{ams}{true}
@@ -282,10 +294,6 @@
 %%% Symbols to indicate special matrices
 \def\1mat{\mathbb{I}} % unity matrix
 \def\0mat{\mathbb{O}} % zero matrix
-
-%%% Provide a string via the variable \@Contact
-%%% This may be used in the title creation of e.g. posters
-\newcommand{\Contact}[1]{\def\@Contact{#1}}
 
 % Command \Scolorbox (shabox with colored inner field)
 % Format : \Scolorbox{rule}{lcolor}{sep}{fcolor}{sdim}{tcolor}{some text}

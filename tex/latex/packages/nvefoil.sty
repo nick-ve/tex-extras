@@ -85,10 +85,13 @@
 %--- Modified by NvE 24-nov-2020
 % Commands \shacbox and \Scolorbox moved into nvecmd.sty so that these
 % can also be used outside this transparancy facility (e.g. for posters).
+%--- Modified by NvE 30-nov-2020
+% Packages fancyhdr, graphicx, epsfig, rotating, shadow, wrapfig and floatflt
+% now included automatically via nvecmd.sty
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NeedsTeXFormat{LaTeX2e} 
-\ProvidesPackage{nvefoil}[2020/11/24 Transparancy facility version 2.1/7 NvE 24-nov-2020]
+\ProvidesPackage{nvefoil}[2020/11/30 Transparancy facility version 2.1/8 NvE 30-nov-2020]
 
 % Set Computer Modern Sans Serif as default font
 \renewcommand{\familydefault}{cmss}
@@ -134,13 +137,6 @@
   \renewcommand{\seriesdefault}{bx}
  }
 
-\RequirePackage{fancyhdr}
-\RequirePackage{epsfig}
-\RequirePackage{rotating}
-\RequirePackage{floatfig}
-\RequirePackage{wrapfig}
-\RequirePackage{shadow}
- 
 % Define the title box for the footer title of each transparency
 % as specified by the \Trtitle command
 \newsavebox{\Ftitle}

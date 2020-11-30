@@ -1,0 +1,94 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                    
+% LaTeX style file to produce a color poster for presentations.
+%                                                                    
+% The package can be invoked for example as :  
+%
+% \documentclass[25pt,a0paper,portrait]{tikzposter}
+% \usepackage[boldmath,boldtext]{nveposter}
+%
+% Available options :
+% -------------------
+% boldmath : produces all mathematical expressions in boldface
+% boldtext : uses a bold font version for the body of the text panels
+%
+%--- Nick van Eijndhoven, IIHE-VUB, Brussels, 30-nov-2020
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\NeedsTeXFormat{LaTeX2e} 
+\ProvidesPackage{nveposter}[2020/11/30 Transparancy facility version 1.0/0 NvE 30-nov-2020]
+
+% Set Latin Modern Sans Serif as default font
+\RequirePackage{lmodern}
+\renewcommand{\familydefault}{lmss}
+
+\RequirePackage{ifthen}
+  
+\newboolean{bold}
+\setboolean{bold}{false}
+
+\DeclareOption{boldtext}{\setboolean{bold}{true}}
+
+\DeclareOption{boldmath}{\PassOptionsToPackage{boldmath}{nvecmd}}
+
+\ProcessOptions
+
+\RequirePackage[color]{nvecmd}
+
+\ifthenelse{\boolean{bold}}
+ {
+  \renewcommand{\seriesdefault}{b}
+ }
+
+\RequirePackage{multicol}
+\setlength{\columnsep}{2cm}
+
+
+% Line width for boxes and ovals
+\thicklines
+\setlength{\fboxrule}{0.5mm}
+\setlength{\fboxsep}{1mm}
+
+% Suppress the LaTex Tikz logo in the right lower corner
+\tikzposterlatexaffectionproofoff
+
+% The default theme and colour scheme
+\usetheme{Default}
+\usenotestyle{VerticalShading}
+\colorlet{backgroundcolor}{white}
+\colorlet{framecolor}{white}
+\colorlet{blocktitlebgcolor}{blue}
+\colorlet{blockbodybgcolor}{white}
+\colorlet{innerblocktitlebgcolor}{red}
+\colorlet{innerblockbodybgcolor}{white}
+\colorlet{notebgcolor}{yellow}
+\colorlet{noteframecolor}{white}
+
+% Provide a text for the contact information in the header
+\newcommand{\contact}[1]{\def\@contact{#1}} 
+
+% Re-definition of the \title command to enable line breaks
+\renewcommand{\title}[1]{\def\@title{#1}} 
+
+% Create the title layout
+\newcommand{\Makeheader}
+{
+ \settitle
+ {
+  \begin{multicols}{2}
+   [
+   {\bf \blue \Huge \@title}
+   ]
+   {\bf \Large \@author}\\[5mm]
+   {\bf \large \@institute}\\[5mm]
+   {\bf \large \@contact}
+                 
+   \columnbreak
+          
+   \begin{flushright} \@titlegraphic \end{flushright}
+  \end{multicols}
+ }
+ \maketitle[linewidth=0,width=\textwidth]
+}
+
+\endinput
