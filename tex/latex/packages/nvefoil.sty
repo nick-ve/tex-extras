@@ -88,15 +88,19 @@
 %--- Modified by NvE 30-nov-2020
 % Packages fancyhdr, graphicx, epsfig, rotating, shadow, wrapfig and floatflt
 % now included automatically via nvecmd.sty
+%--- Modified by NvE 08-dec-2020
+% Included package rotating, since this was removed from nvecmd.sty because
+% of a clash with the standard letter class of older LaTex versions.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NeedsTeXFormat{LaTeX2e} 
-\ProvidesPackage{nvefoil}[2020/11/30 Transparancy facility version 2.1/8 NvE 30-nov-2020]
+\ProvidesPackage{nvefoil}[2020/12/08 Transparancy facility version 2.1/9 NvE 08-dec-2020]
 
 % Set Computer Modern Sans Serif as default font
 \renewcommand{\familydefault}{cmss}
 
 \RequirePackage{ifthen}
+\RequirePackage{rotating}
 
 \newboolean{color}
 \setboolean{color}{true}

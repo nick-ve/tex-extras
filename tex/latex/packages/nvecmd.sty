@@ -133,17 +133,19 @@
 % like for instance in nveposter.sty.
 % Also the packages fancyhdr, graphicx, epsfig, rotating, wrapfig and floatflt included.
 % The latter two enable text wrapping around figures and tables.
+%--- Modified by NvE 08-dec-2020
+% Inclusion of the package rotating removed, since this clashed with the
+% standard letter class of older LaTeX versions.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NeedsTeXFormat{LaTeX2e} 
-\ProvidesPackage{nvecmd}[2020/11/30 Private commands version 1.0/18 NvE 30-nov-2020]
+\ProvidesPackage{nvecmd}[2020/12/08 Private commands version 1.0/19 NvE 08-dec-2020]
 
 \RequirePackage{ifthen}
 \RequirePackage{shadow}
 \RequirePackage{fancyhdr}
 \RequirePackage{graphicx}
 \RequirePackage{epsfig}
-\RequirePackage{rotating}
 \RequirePackage{wrapfig}
 \RequirePackage{floatflt}
 

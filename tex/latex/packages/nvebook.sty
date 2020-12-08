@@ -28,10 +28,13 @@
 %--- Modified by NvE 30-nov-2020
 % Packages fancyhdr, graphicx, epsfig, rotating, shadow, wrapfig and floatflt
 % now included automatically via nvecmd.sty
+%--- Modified by NvE 08-dec-2020
+% Included package rotating, since this was removed from nvecmd.sty because
+% of a clash with the standard letter class of older LaTex versions.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NeedsTeXFormat{LaTeX2e} 
-\ProvidesPackage{nvebook}[2020/11/30 Textbook facility version 1.0/4 NvE 30-nov-2020]
+\ProvidesPackage{nvebook}[2020/12/08 Textbook facility version 1.0/5 NvE 08-dec-2020]
 
 \RequirePackage{ifthen}
 
@@ -66,6 +69,7 @@
 
 \RequirePackage{makeidx}
 \RequirePackage{theorem}
+\RequirePackage{rotating}
  
 % Define the fancyheadings style
 \renewcommand{\MakeUppercase}{}
