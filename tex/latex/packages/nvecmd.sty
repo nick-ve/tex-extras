@@ -136,10 +136,12 @@
 %--- Modified by NvE 08-dec-2020
 % Inclusion of the package rotating removed, since this clashed with the
 % standard letter class of older LaTeX versions.
+%--- Modified by NvE 05-nov-2022
+% Inclusion of the package enumerate to facilitate easy changing of label type.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NeedsTeXFormat{LaTeX2e} 
-\ProvidesPackage{nvecmd}[2020/12/08 Private commands version 1.0/19 NvE 08-dec-2020]
+\ProvidesPackage{nvecmd}[2022/11/05 Private commands version 1.0/20 NvE 05-nov-2022]
 
 \RequirePackage{ifthen}
 \RequirePackage{shadow}
@@ -148,6 +150,7 @@
 \RequirePackage{epsfig}
 \RequirePackage{wrapfig}
 \RequirePackage{floatflt}
+\RequirePackage{enumerate}
 
 \newboolean{ams}
 \setboolean{ams}{true}
