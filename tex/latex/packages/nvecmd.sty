@@ -138,10 +138,14 @@
 % standard letter class of older LaTeX versions.
 %--- Modified by NvE 05-nov-2022
 % Inclusion of the package enumerate to facilitate easy changing of label type.
+%--- Modified by NvE 17-feb-2025
+% Command \Nabla introduced to provide an explicit vector arrow over the nabla operator
+% Also the functionality of the (renewed) command \d extended with e.g. \d[3]x to yield d^{3}x
+% The Command \Euro changed from a \def to a \newcommand.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NeedsTeXFormat{LaTeX2e} 
-\ProvidesPackage{nvecmd}[2022/11/05 Private commands version 1.0/20 NvE 05-nov-2022]
+\ProvidesPackage{nvecmd}[2025/02/17 Private commands version 1.0/21 NvE 17-feb-2025]
 
 \RequirePackage{ifthen}
 \RequirePackage{shadow}
@@ -229,6 +233,9 @@
 % $\Log$ Denotes explicitly the base 10 in the log function
 \newcommand{\Log}{\log_{10}}
 
+% $\Nabla$ Denotes the nabla symbol with an explicit vector arrow
+\newcommand{\Nabla}{\vec{\nabla}}
+
 % Various color settings based on the standard LaTeX color.sty package.
 % Examples :
 % {\blue ...}                --> the text '...' in blue.
@@ -287,14 +294,16 @@
 %%% Indications of nuclei with A and Z values like e.g. \Nuc{4}{2}{He}
 \def\Nuc#1#2#3{\relax\ifmmode{}^{#1}_{#2}{\protect\text{#3}}\else${}^{#1}_{#2}$#3\fi}
 
-%%% Shortcut for 'roman d' in derivatives
-\def\d{\mathrm{d}}
+%%% \d Shortcut for 'roman d' in derivatives or integrals.
+%%% Note: \d[3]x will yield d^{3}x both in math and text mode
+\renewcommand{\d}[1][]{\ensuremath{\mathrm{d}^{#1}{}}}
 
 %%% Make euro sign available via \Euro both in math and text mode
-\def\Euro{%
-\ifmmode\mathcal{C}\!\!\!\!\text{\raisebox{0.5ex}{\tiny=}}%
-\else$\mathcal{C}\!\!\!\!\text{\raisebox{0.5ex}{\tiny=}}$%
-\fi}
+%\def\Euro{%
+%\ifmmode\mathcal{C}\!\!\!\!\text{\raisebox{0.5ex}{\tiny=}}%
+%\else$\mathcal{C}\!\!\!\!\text{\raisebox{0.5ex}{\tiny=}}$%
+%\fi}
+\newcommand{\Euro}{\ensuremath{\mathcal{C}\!\!\!\!\text{\raisebox{0.5ex}{\tiny=}}}}
 
 %%% Symbols to indicate special matrices
 \def\1mat{\mathbb{I}} % unity matrix
