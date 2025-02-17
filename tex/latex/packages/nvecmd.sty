@@ -141,11 +141,12 @@
 %--- Modified by NvE 17-feb-2025
 % Command \Nabla introduced to provide an explicit vector arrow over the nabla operator
 % Also the functionality of the (renewed) command \d extended with e.g. \d[3]x to yield d^{3}x
-% The Command \Euro changed from a \def to a \newcommand.
+% Several commands changed from a \def to a \newcommand.
+% Also new commands \Set and \Mat introduced for generic setting of a number set (e.g. \Set{N}) or matrix (e.g. \Mat{I})
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NeedsTeXFormat{LaTeX2e} 
-\ProvidesPackage{nvecmd}[2025/02/17 Private commands version 1.0/21 NvE 17-feb-2025]
+\ProvidesPackage{nvecmd}[2025/02/17 Private commands version 1.0/23 NvE 17-feb-2025]
 
 \RequirePackage{ifthen}
 \RequirePackage{shadow}
@@ -281,33 +282,31 @@
 \def\FMSlash{\protect\pFMSlash}
 
 %%% Blackboard characters to denote various mathematical sets of numbers
-\def\Nset{\mathbb{N}} % set of positive integer numbers
-\def\Zset{\mathbb{Z}} % set of integer numbers
-\def\Qset{\mathbb{Q}} % set of rational numbers
-\def\Rset{\mathbb{R}} % set of real numbers
-\def\Cset{\mathbb{C}} % set of complex numbers
-\def\Hset{\mathbb{H}} % set of quaternions
+\newcommand{\Nset}{\ensuremath{\mathbb{N}}} % set of positive integer numbers
+\newcommand{\Zset}{\ensuremath{\mathbb{Z}}} % set of integer numbers
+\newcommand{\Qset}{\ensuremath{\mathbb{Q}}} % set of rational numbers
+\newcommand{\Rset}{\ensuremath{\mathbb{R}}} % set of real numbers
+\newcommand{\Cset}{\ensuremath{\mathbb{C}}} % set of complex numbers
+\newcommand{\Hset}{\ensuremath{\mathbb{H}}} % set of quaternions
+\newcommand{\Set}[1]{\ensuremath{\mathbb{#1}}} % Generic number set setting for an arbitrary capital character (e.g. \Set{N})
 
-%%% Indications of nuclei like e.g. \nuc{208}{Pb} and \itnuc{208}{Pb}
-\def\nuc#1#2{\relax\ifmmode{}^{#1}{\protect\text{#2}}\else${}^{#1}$#2\fi}
+%%% Indications of nuclei like e.g. \nuc{208}{Pb}
+\newcommand{\nuc}[2]{\ensuremath{\relax{}^{#1}{\protect\text{#2}}}}
 
 %%% Indications of nuclei with A and Z values like e.g. \Nuc{4}{2}{He}
-\def\Nuc#1#2#3{\relax\ifmmode{}^{#1}_{#2}{\protect\text{#3}}\else${}^{#1}_{#2}$#3\fi}
+\newcommand{\Nuc}[3]{\ensuremath{\relax{}^{#1}_{#2}{\protect\text{#3}}}}
 
 %%% \d Shortcut for 'roman d' in derivatives or integrals.
 %%% Note: \d[3]x will yield d^{3}x both in math and text mode
 \renewcommand{\d}[1][]{\ensuremath{\mathrm{d}^{#1}{}}}
 
 %%% Make euro sign available via \Euro both in math and text mode
-%\def\Euro{%
-%\ifmmode\mathcal{C}\!\!\!\!\text{\raisebox{0.5ex}{\tiny=}}%
-%\else$\mathcal{C}\!\!\!\!\text{\raisebox{0.5ex}{\tiny=}}$%
-%\fi}
 \newcommand{\Euro}{\ensuremath{\mathcal{C}\!\!\!\!\text{\raisebox{0.5ex}{\tiny=}}}}
 
-%%% Symbols to indicate special matrices
-\def\1mat{\mathbb{I}} % unity matrix
-\def\0mat{\mathbb{O}} % zero matrix
+%%% Symbols to indicate special matrices both in math and text mode
+\def\1mat{\ifmmode{\mathbb{I}}\else{$\mathbb{I}$}\fi} % unity matrix
+\def\0mat{\ifmmode{\mathbb{O}}\else{$\mathbb{O}$}\fi} % zero matrix
+\newcommand{\Mat}[1]{\ensuremath{\mathbb{#1}}} % Generic matrix setting for an arbitrary capital character (e.g. \Mat{I})
 
 % Command \Scolorbox (shabox with colored inner field)
 % Format : \Scolorbox{rule}{lcolor}{sep}{fcolor}{sdim}{tcolor}{some text}
